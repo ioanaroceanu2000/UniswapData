@@ -14,9 +14,19 @@ app.get('/ethPriceUSD', async (req, res) => {
   res.send({priceETH: price});
 });
 
+app.get('/tokenPriceUSD/:tokenId', async (req, res) => {
+  try{
+    const price = await tokenPriceUSD(req.params.tokenId);
+    res.send({priceOfToken: price});
+  }catch(error){
+    console.error('Error in getting price', error);
+  }
+
+});
+
 app.get('/tokensVolumeOrder', async (req, res) => {
   const tokens = await tokensVolumeOrder();
-  res.send(tokens);
+  res.send({firsttokens: tokens});
 });
 
 const port = process.env.PORT || 3000;
@@ -87,6 +97,7 @@ const tokenPriceUSD = async (tokenId) => {
     console.error('Error in token price', error);
   }
 }
+
 
 //get pair id from two tokens addresses
 function getPairId(token0, token1){
