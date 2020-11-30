@@ -36,6 +36,15 @@ app.get('/tokensVolumeOrder', async (req, res) => {
   }
 });
 
+app.get('/tokensVariables', async (req, res) => {
+  try{
+    let tokensVariables = readTokenVariables();
+    res.send(tokensVariables);
+  }catch(err){
+    res.send(err)
+  }
+});
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening no port ${port}...`));
 
@@ -193,6 +202,10 @@ const dateCreationPairWithEth = async (tokenId) => {
 
 
 //JSON REGISTERS
+function readTokenVariables(){
+  let tokensVariables = JSON.parse(fs.readFileSync('TokensVariables.json'));
+  return tokensVariables;
+}
 
 // initialise tokens variables for interest rates
 async function recordTokensVariables(){
@@ -227,6 +240,7 @@ async function recordTokensVariables(){
     });
   }
 }
+
 
 //register token's price
 async function registerPrice(){
